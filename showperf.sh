@@ -6,7 +6,7 @@
 # package.
 
 # Author: Alexandr Ablovatski
-# Email: ablovatskia@denison.edu
+# Email: ablovatski@gmail.com
 # Credits: Netflix Technology Blog (https://netflixtechblog.com/linux-performance-analysis-in-60-000-milliseconds-accc10403c55)
 # License: GNU GPL-3
 
@@ -136,7 +136,8 @@ echo "Analyses: Top 10 processes consuming system memory.
 # Show major and minor page faults for a PID
 echo "############################
 Show major and minor page faults for Pid:
-echo "ps -o pid,comm,minflt,majflt <ProcessID>"
+
+ps -o pid,comm,minflt,majflt <ProcessID>
 "
 
 # Get sar output
@@ -182,7 +183,7 @@ echo "Analyses: To capture network packet traffic on interface eth0, run #tcpdum
  tcpdump -r /tmp/tcpdump.pcap.
 "
 
-# Check configured DNS servers for functinal resolution
+# Check configured DNS servers for resolution
 echo "############################
 ns=$(cat /etc/resolv.conf  | grep -v '^#' | grep nameserver | awk '{print $2}')
 for i in $ns; do dig www.google.com @$i| grep time; done
