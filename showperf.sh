@@ -6,7 +6,7 @@
 # package.
 
 # Author: Alexandr Ablovatski
-# Email: ablovatski@gmail.com
+# Email: ablovatskia@denison.edu
 # Credits: Netflix Technology Blog (https://netflixtechblog.com/linux-performance-analysis-in-60-000-milliseconds-accc10403c55)
 # License: GNU GPL-3
 
@@ -126,11 +126,17 @@ echo "Analyses: buffers: For the buffer cache, used for block device I/O.
 
 # Get top 10 processes consuming system memory
 echo "############################
-ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -11
+ps -eo pcpu,pmem,pid,ppid,user,stat,args | sort -k 2 -r | head
 "
-ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -11
+ps -eo pcpu,pmem,pid,ppid,user,stat,args | sort -k 2 -r | head
 echo
 echo "Analyses: Top 10 processes consuming system memory.
+"
+
+# Show major and minor page faults for a PID
+echo "############################
+Show major and minor page faults for Pid:
+echo "ps -o pid,comm,minflt,majflt <ProcessID>"
 "
 
 # Get sar output
@@ -155,6 +161,37 @@ echo "Analyses: List some key TCP metrics. active/s: Number of locally-initiated
  but this isn’t strictly true (e.g., consider a localhost to localhost connection). Retransmits are a 
  sign of a network or server issue; it may be an unreliable network (e.g., the public Internet), or it 
  may be due a server being overloaded and dropping packets.
+"
+
+# See packet drops/loss at hardware level
+echo "############################
+ip -s link
+"
+ip -s link
+echo
+echo "Analyses: See packet drops/errors/collisions at hardware level. 
+"
+
+# Analyze issues at network packet level with tcpdump
+echo "############################
+tcpdump -s 0 -i {INTERFACE} -w {FILEPATH} [filter expression]
+"
+echo
+echo "Analyses: To capture network packet traffic on interface eth0, run #tcpdump -s 0 -i eth0 -w /tmp/tcpdump.pcap
+ and hit ctrl+c to terminate the process. Later the same file could be read using the command 
+ tcpdump -r /tmp/tcpdump.pcap.
+"
+
+# Check configured DNS servers for functinal resolution
+echo "############################
+ns=$(cat /etc/resolv.conf  | grep -v '^#' | grep nameserver | awk '{print $2}')
+for i in $ns; do dig www.google.com @$i| grep time; done
+"
+ns=$(cat /etc/resolv.conf  | grep -v '^#' | grep nameserver | awk '{print $2}')
+for i in $ns; do dig www.google.com @$i| grep time; done
+echo
+echo "Analyses: Normally, it should be no more than 2-4 msec a query. Slower DNS response may also lead to bad 
+ network performance. Check for in-correct DNS configuration.
 "
 
 # Show top output
