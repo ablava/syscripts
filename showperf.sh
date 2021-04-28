@@ -198,7 +198,7 @@ ns=\$(cat /etc/resolv.conf  | grep -v '^#' | grep nameserver | awk '{print \$2}'
 for i in \$ns; do echo querying \$i; dig www.visitwhanganui.nz @\$i| grep time; done
 "
 ns=$(cat /etc/resolv.conf  | grep -v '^#' | grep nameserver | awk '{print $2}')
-for i in $ns; do echo querying $i; dig www.google.com @$i| grep time; done
+for i in $ns; do echo querying $i; dig www.visitwhanganui.nz @$i| grep time; done
 echo
 echo "Analyses: Normally, it should be no more than 2-4 msec a query. Slower DNS response may also lead to bad 
  network performance. Check for in-correct DNS configuration.
