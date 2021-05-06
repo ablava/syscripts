@@ -206,21 +206,24 @@ echo "Analyses: Normally, it should be no more than 2-4 msec a query. Slower DNS
 
 # Show top output
 echo "############################
-top -n1
+top
 "
-top -n1
 echo
-echo "Analyses: see if anything looks wildly different from the earlier commands, which would 
+echo "Run top to see if anything looks wildly different from the earlier commands, which would 
  indicate that load is variable.
 "
 
 # Show number of inotify watchers
 echo "############################
 lsof 2>/dev/null | grep -i inotify | wc -l
+cat /proc/sys/fs/inotify/max_user_watches
 "
-lsof 2>/dev/null | grep -i inotify | wc -l
+echo "CURRENT:"
+lsof 2>/dev/null | grep inotify | wc -l
+echo "MAX:"
+cat /proc/sys/fs/inotify/max_user_watches
 echo
-echo "Analyses: check number of inotify watchers. Restart the process that owns over 5000.
+echo "Analyses: check number of inotify watchers. Restart the process that owns most if close to max.
 "
 
 # Show device utilization
