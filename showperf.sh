@@ -215,7 +215,7 @@ echo "Run top to see if anything looks wildly different from the earlier command
 
 # Show number of inotify watchers
 echo "############################
-lsof 2>/dev/null | grep -i inotify | wc -l
+lsof 2>/dev/null | grep inotify | wc -l
 cat /proc/sys/fs/inotify/max_user_watches
 "
 echo "CURRENT:"
